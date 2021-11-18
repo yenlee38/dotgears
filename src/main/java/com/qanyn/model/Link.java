@@ -7,51 +7,47 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
-public class Pilot {
-
+public class Link {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private int post_id;
-    private String content;
-    private String image_url;
+    private String post_id;
+    private String url;
+    private String type; // FACEBOOK, TWITTER, IOS, ANDROID
     private Date created_at;
     private Date updated_at;
 
-    public String getImage_url() {
-        return image_url;
-    }
-
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
-    }
 
     public int getId() {
         return id;
-    }
-
-    public String getPathThumbnail() {
-        return "/thumbnail-post/pilot/" + this.post_id + "/" + this.getImage_url();
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public int getPost_id() {
+    public String getPost_id() {
         return post_id;
     }
 
-    public void setPost_id(int post_id) {
+    public void setPost_id(String post_id) {
         this.post_id = post_id;
     }
 
-    public String getContent() {
-        return content;
+    public String getUrl() {
+        return url;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Date getCreated_at() {
@@ -70,25 +66,22 @@ public class Pilot {
         this.updated_at = updated_at;
     }
 
-    public Pilot() {
-    }
+    public Link() {}
 
-    public Pilot(int post_id, String content, String image_url) {
-        this.post_id = post_id;
-        this.content = content;
-        this.image_url = image_url;
-    }
-
-    public Pilot(int id, int post_id, String content, Date created_at, Date updated_at) {
+    public Link(int id, String post_id, String url, String type, Date created_at, Date updated_at) {
         this.id = id;
         this.post_id = post_id;
-        this.content = content;
+        this.url = url;
+        this.type = type;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
 
-    public Pilot(int post_id, String content) {
+    public Link(String post_id, String url, String type) {
         this.post_id = post_id;
-        this.content = content;
+        this.url = url;
+        this.type = type;
     }
+
+
 }

@@ -15,6 +15,8 @@ public class AppMvcConfig implements WebMvcConfigurer {
 
         exposeDirectory("thumbnail-post", registry);
         exposeDirectory("imgs", registry);
+        exposeDirectory("vendor", registry);
+        exposeDirectory("css", registry);
 //        registry
 //                .addResourceHandler("/imgs/**")
 //                .addResourceLocations("/imgs/");

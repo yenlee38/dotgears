@@ -3,6 +3,7 @@ package com.qanyn.service;
 import com.qanyn.model.Post;
 import com.qanyn.repository.AdminRepository;
 import com.qanyn.repository.PostRepository;
+import com.qanyn.utils.Translator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class PostService {
     @Autowired
     public AdminService adminService;
 
-    public Post getPostById(int id) {
+    public Post getPostById(String id) {
         return postRepository.getOne(id);
     }
 
@@ -40,6 +41,11 @@ public class PostService {
 
     public void createContentPost(Post post) {
         String adminLogin = adminService.getUsernameLoginCurrent();
+        List<Post> lPost = postRepository.searchByTitle(post.getTitle());
+        String post_id = Translator.changeTitleToId(post.getTitle());
+        if(lPost.size() > 0)
+            post_id = post_id + lPost.size(); //handle same title
+        post.setId(post_id);
         post.setCreated_at(new Date());
         post.setUpdated_at(new Date());
         post.setCreated_by(adminLogin);
@@ -50,7 +56,7 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public void updateStatusPost(int id, String status) {
+    public void updateStatusPost(String id, String status) {
         Post post = postRepository.getOne(id);
         post.setStatus(status);
         post.setUpdated_at(new Date());
@@ -64,6 +70,7 @@ public class PostService {
         post.setGenre(postNew.getGenre());
         post.setDeveloper(postNew.getDeveloper());
         post.setRate(postNew.getRate());
+        post.setRelease_date(postNew.getRelease_date());
         post.setUpdated_at(new Date());
         postRepository.save(post);
     }
@@ -81,13 +88,13 @@ public class PostService {
         return postRepository.searchByTitleAndUsername(title, username);
     }
 
-    public void uploadThumbnail(int post_id, String thumbnail_id) {
+    public void uploadThumbnail(String post_id, String thumbnail_id) {
         Post post = postRepository.getOne(post_id);
         post.setThumbnail_url(thumbnail_id);
         postRepository.save(post);
     }
 
-    public void deletePost(int id) {
+    public void deletePost(String id) {
         postRepository.deleteById(id);
     }
 

@@ -14,7 +14,7 @@ public class ScreenShotsService {
     @Autowired
     public ScreenShotsRepository screenShotsRepository;
 
-    public void addToPost(int post_id) {
+    public void addToPost(String post_id) {
         ScreenShots screenShots = new ScreenShots();
         screenShots.setPost_id(post_id);
         screenShots.setCreated_at(new Date());
@@ -36,7 +36,7 @@ public class ScreenShotsService {
         return screenShotsRepository.getOne(id);
     }
 
-    public List<ScreenShots> getAllListByPostId(int post_id) {
+    public List<ScreenShots> getAllListByPostId(String post_id) {
         return screenShotsRepository.findAllByPostId(post_id);
     }
 }

@@ -12,5 +12,5 @@ import java.util.List;
 public interface ScreenShotsRepository extends JpaRepository<ScreenShots, Integer> {
 
     @Query(value = "select s from ScreenShots s where s.post_id = :post_id")
-    List<ScreenShots> findAllByPostId(@Param("post_id") int post_id);
+    List<ScreenShots> findAllByPostId(@Param("post_id") String post_id);
 }

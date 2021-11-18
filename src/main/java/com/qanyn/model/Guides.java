@@ -11,7 +11,7 @@ public class Guides {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private int post_id;
+    private String post_id;
     private String image_url;
     private Date created_at;
     private Date updated_at;
@@ -24,11 +24,11 @@ public class Guides {
         this.id = id;
     }
 
-    public int getPost_id() {
+    public String getPost_id() {
         return post_id;
     }
 
-    public void setPost_id(int post_id) {
+    public void setPost_id(String post_id) {
         this.post_id = post_id;
     }
 
@@ -63,12 +63,12 @@ public class Guides {
     public Guides() {
     }
 
-    public Guides(int post_id, String image_url) {
+    public Guides(String post_id, String image_url) {
         this.post_id = post_id;
         this.image_url = image_url;
     }
 
-    public Guides(int id, int post_id, String image_url, Date created_at, Date updated_at) {
+    public Guides(int id, String post_id, String image_url, Date created_at, Date updated_at) {
         this.id = id;
         this.post_id = post_id;
         this.image_url = image_url;

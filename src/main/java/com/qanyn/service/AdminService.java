@@ -23,6 +23,13 @@ public class AdminService {
         adminRepository.save(admin);
     }
 
+    public boolean isExistUsername(String username) {
+        Admin admin = adminRepository.findByUsername(username);
+        if(admin == null)
+            return false;
+        return true;
+    }
+
     public void updateAdmin(Admin admin) {
         Admin newAdmin = adminRepository.findById(admin.getId()).get();
         newAdmin.setUpdated_at(new Date());
