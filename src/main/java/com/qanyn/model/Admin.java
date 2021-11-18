@@ -46,7 +46,6 @@ public class Admin {
         this.is_hidden = is_hidden;
     }
 
-
     public Admin(String username, String password, String matchingPassword, String role) {
         this.username = username;
         this.password = password;

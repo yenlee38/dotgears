@@ -12,5 +12,5 @@ import java.util.List;
 public interface GuidesRepository extends JpaRepository<Guides, Integer> {
 
     @Query (value = "select g from Guides g where g.post_id = :post_id")
-    List<Guides> getAllByPostId(@Param("post_id") int post_id);
+    List<Guides> getAllByPostId(@Param("post_id") String post_id);
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public interface PilotsRepository extends JpaRepository<Pilots, Integer> {
 
     @Query (value = "select p from Pilots p where p.post_id = :post_id")
-    List<Pilots> getAllByPostId(@Param("post_id") int post_id);
+    List<Pilots> getAllByPostId(@Param("post_id") String post_id);
 
 
 }

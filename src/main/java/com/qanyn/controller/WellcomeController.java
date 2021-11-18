@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/qanyn")
+@RequestMapping("/treegames")
 public class WellcomeController {
 
     @Autowired
@@ -19,13 +19,15 @@ public class WellcomeController {
         return "index";
     }
 
+    @RequestMapping("/login")
+    public String login(Model model) {
+        return "login";
+    }
+
     @RequestMapping("/detail")
     public String detail(Model model) {
         return "detail-post";
     }
 
-    @RequestMapping("/hello")
-    public String detailHome(Model model) {
-        return "hello";
-    }
+
 }

@@ -14,7 +14,7 @@ public class GuidesService {
     @Autowired
     public GuidesRepository guidesRepository;
 
-    public List<Guides> getAllByPostId(int id) {
+    public List<Guides> getAllByPostId(String id) {
         return guidesRepository.getAllByPostId(id);
     }
 

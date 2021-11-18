@@ -12,7 +12,7 @@ public class Pilots {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private int post_id;
+    private String post_id;
     private String content;
     private String title;
     private String thumbnail_url;
@@ -43,11 +43,11 @@ public class Pilots {
         this.id = id;
     }
 
-    public int getPost_id() {
+    public String getPost_id() {
         return post_id;
     }
 
-    public void setPost_id(int post_id) {
+    public void setPost_id(String post_id) {
         this.post_id = post_id;
     }
 
@@ -118,7 +118,7 @@ public class Pilots {
     public Pilots() {
     }
 
-    public Pilots(int post_id, String title, String thumbnail_url, String full_name, String zodiac_sign, String hobbies) {
+    public Pilots(String post_id, String title, String thumbnail_url, String full_name, String zodiac_sign, String hobbies) {
         this.post_id = post_id;
         this.title = title;
         this.thumbnail_url = thumbnail_url;
@@ -127,7 +127,7 @@ public class Pilots {
         this.hobbies = hobbies;
     }
 
-    public Pilots(int post_id, String content, String title, String thumbnail_url, String full_name, String zodiac_sign, String hobbies, String blood_type, Date created_at, Date updated_at) {
+    public Pilots(String post_id, String content, String title, String thumbnail_url, String full_name, String zodiac_sign, String hobbies, String blood_type, Date created_at, Date updated_at) {
         this.post_id = post_id;
         this.content = content;
         this.title = title;
@@ -140,7 +140,7 @@ public class Pilots {
         this.updated_at = updated_at;
     }
 
-    public Pilots(int id, int post_id, String title, String thumbnail_url, String full_name, String zodiac_sign, String hobbies, String blood_type, Date created_at, Date updated_at) {
+    public Pilots(int id, String post_id, String title, String thumbnail_url, String full_name, String zodiac_sign, String hobbies, String blood_type, Date created_at, Date updated_at) {
         this.id = id;
         this.post_id = post_id;
         this.title = title;
@@ -153,7 +153,7 @@ public class Pilots {
         this.updated_at = updated_at;
     }
 
-    public Pilots(int id, int post_id, String content, String title, String thumbnail_url, String full_name, String zodiac_sign, String hobbies, String blood_type, Date created_at, Date updated_at) {
+    public Pilots(int id, String post_id, String content, String title, String thumbnail_url, String full_name, String zodiac_sign, String hobbies, String blood_type, Date created_at, Date updated_at) {
         this.id = id;
         this.post_id = post_id;
         this.content = content;

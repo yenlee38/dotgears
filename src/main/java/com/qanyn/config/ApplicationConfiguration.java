@@ -24,13 +24,14 @@ public class ApplicationConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/login", "/h2-console/**").permitAll()
-                .antMatchers("/qanyn/admin**").access("hasAnyRole('ADMIN', 'SUBADMIN')")
-                .antMatchers( "/qanyn/admin/account**").access("hasRole('ADMIN')")
+                .antMatchers("/treegames/admin**/**").access("hasAnyRole('ADMIN', 'SUBADMIN')")
+                .antMatchers( "/treegames/admin/account**").access("hasRole('ADMIN')")
 //                .antMatchers("/qanyn/**").permitAll()
                 .and()
                 .formLogin()
-//                .loginPage("/qanyn/login")
-                .defaultSuccessUrl("/qanyn/admin/post");
+                .loginPage("/treegames/login")
+                .loginProcessingUrl("/perform_login")
+                .defaultSuccessUrl("/treegames/admin/post");
 
         http.csrf().disable();
         http.headers().frameOptions().disable();

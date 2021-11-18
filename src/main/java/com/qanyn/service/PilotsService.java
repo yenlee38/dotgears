@@ -43,7 +43,7 @@ public class PilotsService {
       pilotsRepository.save(pilots);
   }
 
-  public List<Pilots> getAllByPostId(int post_id) {
+  public List<Pilots> getAllByPostId(String post_id) {
       return pilotsRepository.getAllByPostId(post_id);
   }
 }

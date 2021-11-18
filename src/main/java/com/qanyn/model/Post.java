@@ -1,22 +1,25 @@
 package com.qanyn.model;
 
+import com.qanyn.utils.Translator;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private String id;
     private String title;
     private String content;
     private String genre;
     private String rate;
-    private Date release_date;
+    private String release_date;
     private String developer;
     private String thumbnail_url;
     private String status; //PENDDING,DENIED, PUBLISHED, NOTPUBLISHED
@@ -24,11 +27,11 @@ public class Post {
     private Date updated_at;
     private String created_by;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -64,11 +67,11 @@ public class Post {
         this.rate = rate;
     }
 
-    public Date getRelease_date() {
+    public String getRelease_date() {
         return release_date;
     }
 
-    public void setRelease_date(Date release_date) {
+    public void setRelease_date(String release_date) {
         this.release_date = release_date;
     }
 
@@ -109,7 +112,13 @@ public class Post {
     }
 
     public Date getUpdated_at() {
-        return updated_at;
+        return this.updated_at;
+    }
+
+    public String formatDate(Date date) {
+        String pattern = "MM-dd-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        return simpleDateFormat.format(date);
     }
 
     public void setUpdated_at(Date updated_at) {
@@ -132,21 +141,20 @@ public class Post {
         this.content = content;
     }
 
-    public Post(int id, String title, String content) {
+    public Post(String id, String title, String content) {
         this.title = title;
         this.content = content;
         this.id = id;
     }
 
-
-    public Post(String title, String content, String created_by) {
+    public Post(String id, String title, String content, String created_by) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.created_by = created_by;
     }
 
-
-    public Post(int id, String title, String content, String genre, String rate, Date release_date, String developer, String thumbnail_url, String status, Date created_at, Date updated_at, String created_by) {
+    public Post(String id, String title, String content, String genre, String rate, String release_date, String developer, String thumbnail_url, String status, Date created_at, Date updated_at, String created_by) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -161,7 +169,7 @@ public class Post {
         this.created_by = created_by;
     }
 
-    public Post(String title, String content, String genre, String rate, Date release_date, String developer, String thumbnail_url) {
+    public Post(String title, String content, String genre, String rate, String release_date, String developer, String thumbnail_url) {
         this.title = title;
         this.content = content;
         this.genre = genre;

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Integer> {
+public interface PostRepository extends JpaRepository<Post, String> {
 
     @Query(value = "select p from Post p where p.created_by = :username")
     List<Post> findAllBySubAdminLogin(@Param("username") String username);

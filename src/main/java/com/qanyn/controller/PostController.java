@@ -1,6 +1,8 @@
 package com.qanyn.controller;
 
 import com.qanyn.common.FileUploadUtil;
+import com.qanyn.utils.TYPE_LINK;
+import com.qanyn.utils.enviroment;
 import com.qanyn.model.*;
 import com.qanyn.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
-@RequestMapping("/qanyn")
+@RequestMapping("/treegames")
 public class PostController {
 
     @Autowired
@@ -29,8 +31,6 @@ public class PostController {
     @Autowired
     public AdminService adminService;
 
-    @Autowired
-    public PilotService pilotService;
 
     @Autowired
     public PilotsService pilotsService;
@@ -41,50 +41,72 @@ public class PostController {
     @Autowired
     public ScreenShotsService screenShotsService;
 
-    @RequestMapping(value = "/post-deatail/{id}", method = RequestMethod.GET)
-    public String showDetailPost (@PathVariable("id") int id, Model model) {
+    @Autowired
+    public LinkService linkService;
+
+    @RequestMapping(value = "/game/{id}", method = RequestMethod.GET)
+    public String showDetailPost (@PathVariable("id") String id, Model model) {
 
         Post post = postService.getPostById(id);
-        List<Pilot> pilotList = pilotService.getAllListByPostId(id);
         List<Pilots> pilotsList = pilotsService.getAllByPostId(id);
         List<ScreenShots> screenShotsList = screenShotsService.getAllListByPostId(id);
         List<Guides> guidesList = guidesService.getAllByPostId(id);
+        List<Link> linkList = linkService.getLinkByPostId(id);
+        String fbUrl = "";
+        String twUrl = "";
+        String iosUrl = "";
+        String androidUrl = "";
+        for(int i = 0; i < linkList.size(); i++) {
 
+            if (linkList.get(i).getType().equals(TYPE_LINK.FACEBOOK)) fbUrl = linkList.get(i).getUrl();
+            else if (linkList.get(i).getType().equals(TYPE_LINK.ANDROID)) androidUrl = linkList.get(i).getUrl();
+            else if (linkList.get(i).getType().equals(TYPE_LINK.IOS)) iosUrl = linkList.get(i).getUrl();
+            else if (linkList.get(i).getType().equals(TYPE_LINK.TWITTER)) twUrl = linkList.get(i).getUrl();
+        }
+        model.addAttribute("admin", adminService.getUsernameLoginCurrent());
         model.addAttribute("post", post);
-        model.addAttribute("pilotList", pilotList);
         model.addAttribute("pilotsList", pilotsList);
         model.addAttribute("screenShotsList", screenShotsList);
         model.addAttribute("guidesList", guidesList);
+        model.addAttribute("linkList", linkList);
+        model.addAttribute("fbUrl", fbUrl);
+        model.addAttribute("androidUrl", androidUrl);
+        model.addAttribute("iosUrl", iosUrl);
+        model.addAttribute("twUrl", twUrl);
+        model.addAttribute("urlShare", enviroment.BASE_URL + "/game/" + id);
         return "detail-post";
     }
 
 
-    @RequestMapping(value = "/admin/post-deatail", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/game", method = RequestMethod.GET)
     public String showAdminDetailPost (Model model) {
+
+        model.addAttribute("admin", adminService.getUsernameLoginCurrent());
         return "admin-detail-post";
     }
 
     @RequestMapping (value = "/admin/post-create", method = RequestMethod.POST)
     public String createPost(@Valid String title, @Valid String genre, @Valid String release_date,
-                             @Valid String developer, @Valid String content) {
+                             @Valid String developer, @Valid String content, @Valid String rate) {
         Post post = new Post(title, content);
         post.setDeveloper(developer);
         post.setGenre(genre);
-
+        post.setRate(rate);
+        post.setRelease_date(release_date);
         postService.createContentPost(post);
-        return "redirect:/qanyn/admin/post";
+        return "redirect:/treegames/admin/post";
     }
 
     @RequestMapping (value = "/admin/post-confirm", method = RequestMethod.POST)
-    public String confirmPost(@Valid int id) {
+    public String confirmPost(@Valid String id) {
         postService.updateStatusPost(id, "PUBLISHED");
-        return "redirect:/qanyn/admin/post";
+        return "redirect:/treegames/admin/post";
     }
 
     @RequestMapping (value = "/admin/post-deny", method = RequestMethod.POST)
-    public String denyPost(@Valid int id) {
+    public String denyPost(@Valid String id) {
         postService.updateStatusPost(id, "DENIED");
-        return "redirect:/qanyn/admin/post";
+        return "redirect:/treegames/admin/post";
     }
 
     @RequestMapping (value = "/admin/post-search", method = RequestMethod.POST)
@@ -96,33 +118,32 @@ public class PostController {
 
     @RequestMapping (value = "/admin/post-update-content", method = RequestMethod.POST)
     public String updatePostContent (@Valid String title, @Valid String content, @Valid String rate,
-                                     @Valid String developer, @Valid String genre,
-                                     @Valid int post_id) {
+                                     @Valid String developer, @Valid String genre, @Valid String release_date,
+                                     @Valid String post_id) {
         Post post = new Post(post_id, title, content);
         post.setGenre(genre);
         post.setDeveloper(developer);
         post.setRate(rate);
+        post.setRelease_date(release_date);
         postService.updateContentPost(post);
-        return "redirect:/qanyn/admin/post-create-detail/" + post_id;
+        return "redirect:/treegames/admin/post-create-detail/" + post_id;
     }
 
     @RequestMapping(value = "/admin/post-delete/{id}", method = RequestMethod.GET)
-    public String deletePost(@PathVariable int id) {
+    public String deletePost(@PathVariable String id) {
         postService.deletePost(id);
-        return "redirect:/qanyn/admin/post";
+        return "redirect:/treegames/admin/post";
     }
 
     @RequestMapping(value = "/admin/post-upload-thumbnail/{id}", method = RequestMethod.POST)
-    public String uploadThumnail(@PathVariable("id") int id, @RequestParam("thumbnail") MultipartFile inputFile, @Valid int post_id) {
+    public String uploadThumnail(@PathVariable("id") String id, @RequestParam("thumbnail") MultipartFile inputFile, @Valid String post_id) {
         Post post = postService.getPostById(post_id);
         String thumbnail_post = post.getThumbnail_url();
         if(thumbnail_post!=null) {
             String fileLocationPath = post.getPathThumbnail().substring(1); //get location to delete location image
             try {
                 Files.delete(Paths.get(fileLocationPath)); //path in database "/thumbnail-post/**"
-                System.out.println("detete thumbnail work!!");
             } catch (IOException e) {
-                System.out.println("detete not thumbnail work!!");
                 e.printStackTrace();
             }
         }
@@ -134,7 +155,7 @@ public class PostController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "redirect:/qanyn/admin/post-create-detail/" + post_id;
+        return "redirect:/treegames/admin/post-create-detail/" + post_id;
     }
 
 }
